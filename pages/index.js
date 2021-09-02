@@ -2,11 +2,17 @@ import paperCore, { Path,Point,view,Tool} from 'paper/dist/paper-core'
 import { useEffect, useRef,useState } from 'react'
 import Canvas from '../components/Canvas'
 export default function Home() {
+  const SHAPE = "SHAPE"
+  const RECTANGLE = "RECTANGLE"
+  const CIRCLE = "CIRCLE"
+  const LINE = "LINE"
 const [path, setPath] = useState({})
-const [key, setKey] = useState(false)
+const [drawType, setDrawType] = useState(SHAPE)
+// const [key, setKey] = useState(false)
 const [index, setIndex] = useState(0)
 const [paths, setPaths] = useState([])
 const canvasRef = useRef()
+var myPath;
 const initPaper = () =>{
   paperCore.install(canvasRef.current)
   paperCore.setup(canvasRef.current);
@@ -36,7 +42,7 @@ const handleSave = () => {
 }
 const handleRedo = () => {
   console.log("Redo")
-  if(paths[index]!==undefined)
+  if(index)
   {
     // console.log(paths.length)
     // console.log(paths)
@@ -52,10 +58,43 @@ const handleRedo = () => {
 }
 const handleClear = () => {
   console.log("Clear")
+  paths.forEach((_path)=>{
+    if(_path!==undefined)
+    _path.remove()})
+  
 
 }
+const initShape = () => {
+  myPath  = new Path()
+	myPath.strokeColor = 'black';
+}
+const drawShape = (event) => {
+	path.add(event.point)
+
+}
+const initCircle = (event) =>{
+  myPath  = new Path.Circle(event.point,100)
+	myPath.strokeColor = 'black';
+  myPath.fillColor = 'red'
+}
+const drawCircle = (event) => {
+  console.log("drawCircle")
+
+}
+const initRectangle = (event) =>{
+  myPath  = new Path.Rectangle(event.point,40,30)
+	myPath.strokeColor = 'black';
+  myPath.fillColor = 'red'
+}
+const drawRectangle = () => {
+  console.log("drawRectangle")
+
+  
+
+}
+
 const handleKeyDown = (e)=>{
-  setKey(true)
+  // setKey(true)
   if (e.ctrlKey &&  (e.which === 122 || e.which === 90)) {
     e.preventDefault()
 
@@ -74,23 +113,71 @@ const handleKeyDown = (e)=>{
     handleClear()
   }
  }
-var myPath;
 function onMouseDown(event) {
-  myPath  = new Path()
-	myPath.strokeColor = 'black';
+  console.log("drawType",drawType)
+  switch(drawType)
+  {
+    case SHAPE:{
+  initShape(event)
+  break;
+    }
+    case RECTANGLE:{
+  initRectangle(event)
+  break;
+
+    }
+    case CIRCLE:{
+  initCircle(event)
+  break;
+
+    }
+  }
+  
   setPath(myPath)
   setIndex(paths.length+=1)
 
 }
 
 function onMouseDrag(event) {
+switch(drawType)
+{
+  case SHAPE:{
+drawShape(event)
+break;
 
-	path.add(event.point)
+  }
+  case RECTANGLE:{
+drawRectangle(event)
+break;
+
+  }
+  case CIRCLE:{
+    drawCircle(event)
+  break;
+
+      }
+}
 
 }
 
 function onMouseUp(event) {
-console.log("idx",index)
+  switch(drawType)
+{
+
+  case RECTANGLE:{
+drawRectangle(event)
+break;
+
+  }
+  case CIRCLE:{
+    drawCircle(event)
+  break;
+
+      }
+}
+
+
+// console.log("idx",index)
   // path.selected = true
   // path.closed = true;
   // Select the path, so we can see its handles:
@@ -129,17 +216,20 @@ console.log("idx",index)
     view.onMouseUp = onMouseUp
     view.onMouseDrag = onMouseDrag
 
-  },[path,index])
+  },[path])
 useEffect(() => {
   document.addEventListener('keydown',(e)=>{ handleKeyDown(e);})
 
-    },[key])
+    },[])
   
   return (
    <>
 <h1>XDraw</h1>
 <button onClick={handleUndo}>Undo</button>
 <button onClick={handleRedo}>Redo</button>
+<button onClick={handleClear}>Clear All</button>
+<button onClick={()=>{setDrawType(RECTANGLE)}}>Rectangle</button>
+<button onClick={()=>{setDrawType(CIRCLE)}}>Circle</button>
 <Canvas ref = {canvasRef}/>
    </>
   )
