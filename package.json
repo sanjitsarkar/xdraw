@@ -12,6 +12,7 @@
     "next": "11.1.2",
     "paper": "^0.12.15",
     "react": "17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
