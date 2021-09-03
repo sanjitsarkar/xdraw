@@ -2,7 +2,7 @@ const { useReducer,createContext } = require("react");
 import {CIRCLE,RECTANGLE,LINE,SHAPE,SELECT} from '../utility/Constants'
 export const DrawTypeContext = createContext()
 
-const initialDrawTypeState = SELECT
+const initialDrawTypeState = SHAPE
 
 const reducer = (state,action)=>{
     switch(action)
@@ -27,7 +27,7 @@ const reducer = (state,action)=>{
             {
                 return SELECT
             }
-        default: return state
+        // default: return state
     }
 }
 

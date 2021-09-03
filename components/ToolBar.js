@@ -7,12 +7,13 @@ import { IndexContext } from '../store/IndexStore'
 import { PathsContext } from '../store/PathsStore'
 import ColorPicker from './ColorPicker'
 import { ColorTypeContext } from '../store/ColorType'
-const ToolBar = ({setStrokeSize}) => {
+import { StrokePropertyContext } from '../store/StrokePropertyStore'
+const ToolBar = () => {
     const {drawType, setDrawType} = useContext(DrawTypeContext)
 const {index, setIndex} = useContext(IndexContext)
 const {paths, setPaths} = useContext(PathsContext)
 const {colorType,setColorType} = useContext(ColorTypeContext)
-
+const {strokeProperty,setStrokeProperty} = useContext(StrokePropertyContext)
 
     useEffect(() => {
         // console.log("drawType",drawType)
@@ -68,7 +69,7 @@ const {colorType,setColorType} = useContext(ColorTypeContext)
 <ColorPicker/>
 <button onClick={()=>{setColorType(FILL_COLOR)}}>FILL</button>
 <button onClick={()=>{setColorType(STROKE_COLOR)}}>STROKE</button>
-<input type="number" onChange={(e)=>setStrokeSize(e.target.value)} placeholder="Stroke Size"/>
+<input type="number" onChange={(e)=>setStrokeProperty({strokeWidth:e.target.value})} placeholder="Stroke Size"/>
         </div>
     );
 }
