@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { SketchPicker } from 'react-color'
 import { ColorContext } from '../store/ColorStore';
-import { ColorTypeContext } from '../store/ColorType';
+import { ColorTypeContext } from '../store/ColorTypeStore';
 import { FILL_COLOR } from '../utility/Constants';
 const ColorPicker = () => {
 const {colorType} = useContext(ColorTypeContext)
