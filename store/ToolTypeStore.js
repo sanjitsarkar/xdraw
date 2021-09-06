@@ -1,5 +1,5 @@
 const { useReducer,createContext } = require("react");
-import {CIRCLE,RECTANGLE,LINE,FREE_DRAW,SELECT, DRAW} from '../utility/Constants'
+import {CIRCLE,RECTANGLE,LINE,FREE_DRAW,SELECT, DRAW, TEXT_TOOL, HAND_TOOL, MOVE} from '../utility/Constants'
 export const ToolTypeContext = createContext()
 
 const initialToolTypeState = DRAW
@@ -14,6 +14,20 @@ const reducer = (state,action)=>{
         case SELECT:
             {
                 return SELECT
+            }
+        case TEXT_TOOL:
+            {
+                return TEXT_TOOL
+            }
+       
+        case HAND_TOOL:
+            {
+                return HAND_TOOL
+            }
+        case MOVE:
+            {
+                console.log("MOVE")
+                return MOVE
             }
        
         default: return state

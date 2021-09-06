@@ -9,7 +9,11 @@ const {colorType} = useContext(ColorTypeContext)
     const {fillColor,setFillColor,strokeColor,setStrokeColor} = useContext(ColorContext)
     return (
        
-           (<SketchPicker styles={{width:"200px",margin:"0"}} color={colorType===FILL_COLOR ?fillColor:strokeColor} onChange={(_color)=>colorType===FILL_COLOR ?setFillColor(_color):setStrokeColor(_color)} onChangeComplete={(_color)=>colorType===FILL_COLOR ?setFillColor(_color):setStrokeColor(_color)}/>)
+           (<SketchPicker disableAlpha={false} className="color_picker" color={colorType===FILL_COLOR ?fillColor:strokeColor} onChange={(_color)=>colorType===FILL_COLOR ?setFillColor(_color.hex):setStrokeColor(_color.hex)} onChangeComplete={(_color)=>{colorType===FILL_COLOR ?setFillColor(_color.hex):setStrokeColor(_color.hex);
+            
+        }}
+        
+        />)
         
 
     );

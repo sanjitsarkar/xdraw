@@ -1,6 +1,6 @@
 import { ColorProvider } from '../store/ColorStore'
 import { ColorTypeProvider } from '../store/ColorTypeStore'
-import { DrawTypeProvider } from '../store/DrawTypeStore'
+import { ShapeTypeProvider } from '../store/ShapeTypeStore'
 import { HistoryProvider } from '../store/HistoryStore'
 import {  IndexProvider } from '../store/IndexStore'
 import { PathsProvider } from '../store/PathsStore'
@@ -8,9 +8,11 @@ import { PathProvider } from '../store/PathStore'
 import { StrokePropertyProvider } from '../store/StrokePropertyStore'
 import { ToolTypeProvider } from '../store/ToolTypeStore'
 import '../styles/globals.css'
+import { ShowColorPickerProvider, ShowColorProvider } from '../store/ShowColorPickerStore'
 function MyApp({ Component, pageProps }) {
   return (
-  <DrawTypeProvider>
+  <ShapeTypeProvider>
+    <ShowColorPickerProvider>
     <ColorProvider>
     <ColorTypeProvider>
   <PathsProvider>
@@ -28,7 +30,8 @@ function MyApp({ Component, pageProps }) {
   </PathsProvider>
   </ColorTypeProvider>
   </ColorProvider>
-  </DrawTypeProvider>
+  </ShowColorPickerProvider>
+  </ShapeTypeProvider>
   )
 }
 
