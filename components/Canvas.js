@@ -1,55 +1,61 @@
 import React,{ useState } from "react";
 import { useEffect, useContext,useRef } from 'react'
 import { PathsContext } from "../store/PathsStore";
-import {SELECT,DRAW, MOVE} from '../utility/Constants'
-import { Tool} from "paper/dist/paper-core";
+import {SELECT} from '../utility/Constants'
+import paperCore, { PaperScope, project, Tool} from "paper/dist/paper-core";
 
 import { ToolTypeContext } from '../store/ToolTypeStore'
 import ToolBar from "./ToolBar";
 import { ShowColorPickerContext } from "../store/ShowColorPickerStore";
 import { useHandleKeyDown } from "../hooks/useHandleKeyDown";
 import { initPaper } from "../hooks/initPaper";
-import { useColor } from "../hooks/useColor";
+import { useItemPropertyEffect } from "../hooks/useItemPropertyEffect";
 import { handleMouseEvents } from "../hooks/handleMouseEvents";
-
+import Layers from "./Layers";
+import PropertyPanel from "./PropertyPanel";
+import { PathContext } from "../store/PathStore";
+import { IsSelectedContext } from "../store/IsSelectedStore";
 const Canvas = ()=>{
 const canvasRef = useRef()
 const downloadRef = useRef()
 
-const {paths} = useContext(PathsContext)
 const {toolType,setToolType} = useContext(ToolTypeContext)
 const [tool, setTool] = useState()
 const {showColorPicker, setShowColorPicker} = useContext(ShowColorPickerContext)
 const [keyDown] = useHandleKeyDown(downloadRef)
-
-
+const {path} = useContext(PathContext)
+const {isSelected, setIsSelected,isMultiSelected, setIsMultiSelected} = useContext(IsSelectedContext)
 
 useEffect(() => {
-  console.log(keyDown)
   initPaper(canvasRef)
   const _tool = new Tool()
   setTool(_tool)
-
 }, []);
 
-useColor()
+useItemPropertyEffect()
 handleMouseEvents(tool)
-  
-
-
 useEffect(() => {
- const listener =  document.addEventListener('keydown',(e)=>{ keyDown(e);})
-return()=>{
-  document.removeEventListener("keydown",listener)
-}
-    },[keyDown])
+  // console.log(paperCore.project)
+}, [keyDown]);
+  
+useEffect(() => {
+  if(tool)
+tool.onKeyDown = keyDown
+  
+}, [tool,keyDown]);
+
+
 
   
     return(
     <>
     <a ref={downloadRef} hidden/>
     <ToolBar/>
-    <canvas ref={canvasRef} id="myCanvas" resize="true" onClick={()=>{
+    <div className="group main">
+      <div className="left">
+        <Layers/>
+      </div>
+    <canvas ref={canvasRef} className="canvas" resize="true" onClick={()=>{
       if(showColorPicker)
       {
       setToolType(SELECT)
@@ -58,6 +64,14 @@ return()=>{
       
   
     }}></canvas>
+    {
+    
+    <div className="right">
+      {/* Right */}
+      <PropertyPanel/>
+    </div>
+}
+    </div>
     </>)
 } 
 

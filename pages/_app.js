@@ -5,10 +5,11 @@ import { HistoryProvider } from '../store/HistoryStore'
 import {  IndexProvider } from '../store/IndexStore'
 import { PathsProvider } from '../store/PathsStore'
 import { PathProvider } from '../store/PathStore'
-import { StrokePropertyProvider } from '../store/StrokePropertyStore'
+import { ItemPropertyProvider } from '../store/ItemPropertyStore'
 import { ToolTypeProvider } from '../store/ToolTypeStore'
 import '../styles/globals.css'
 import { ShowColorPickerProvider, ShowColorProvider } from '../store/ShowColorPickerStore'
+import { IsSelectedProvider } from '../store/IsSelectedStore'
 function MyApp({ Component, pageProps }) {
   return (
   <ShapeTypeProvider>
@@ -18,13 +19,15 @@ function MyApp({ Component, pageProps }) {
   <PathsProvider>
   <PathProvider>
     <IndexProvider>
-      <StrokePropertyProvider>
+      <ItemPropertyProvider>
         <HistoryProvider>
           <ToolTypeProvider>
+            <IsSelectedProvider>
   <Component {...pageProps} />
+  </IsSelectedProvider>
   </ToolTypeProvider>
   </HistoryProvider>
-  </StrokePropertyProvider>
+  </ItemPropertyProvider>
   </IndexProvider>
     </PathProvider>
   </PathsProvider>

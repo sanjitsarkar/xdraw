@@ -1,16 +1,16 @@
 import { Path } from "paper/dist/paper-core";
 import { useContext } from "react";
-import { ColorContext } from "../store/ColorStore";
+// import { ColorContext } from "../store/ColorStore";
 import { PathContext } from "../store/PathStore";
-import { StrokePropertyContext } from "../store/StrokePropertyStore";
-import { ToolTypeContext } from "../store/ToolTypeStore";
+import { ItemPropertyContext } from "../store/ItemPropertyStore";
+// import { ToolTypeContext } from "../store/ToolTypeStore";
 import {CIRCLE,RECTANGLE,LINE,FREE_DRAW, POLYGON, PEN_TOOL, SELECT} from '../utility/Constants'
 export const useCreateShape = ()=>
 {
-const {strokeProperty} = useContext(StrokePropertyContext)
-  const {path, setPath} = useContext(PathContext)
-  const {fillColor,strokeColor} = useContext(ColorContext)
-  const {setToolType} = useContext(ToolTypeContext)
+const {itemProperty} = useContext(ItemPropertyContext)
+const {path, setPath} = useContext(PathContext)
+  // const {fillColor,strokeColor} = useContext(ColorContext)
+  // const {setToolType} = useContext(ToolTypeContext)
   let _path;
   const createShape = (type=LINE,event,side=3)=>
   {
@@ -19,6 +19,10 @@ const {strokeProperty} = useContext(StrokePropertyContext)
       {
 if(event.modifiers.shift)
 {
+  if(_path)
+  {
+    _path.remove()
+  }
         _path = new Path.Circle({
           position: event.downPoint, 
           radius: event.downPoint.subtract(event.point).length,
@@ -30,6 +34,7 @@ if(event.modifiers.shift)
         radius: event.downPoint.subtract(event.point),
     }) 
     }
+    _path.name="circle"
         break
       
     }
@@ -39,6 +44,7 @@ if(event.modifiers.shift)
         _path = new Path.Line(event.downPoint,event.point)
     
   
+        _path.name="line"
 
      
        break
@@ -69,13 +75,14 @@ if(event.modifiers.shift)
           ) 
           }
       
+     _path.name="rectangle"
            
              break
 
     }
   case POLYGON:
     {
-      console.log("poly",event)
+      // console.log("poly",event)
       if(event.keyDown)
       {
               _path = new Path.RegularPolygon(
@@ -91,6 +98,7 @@ if(event.modifiers.shift)
           )
           }
         
+    _path.name="polygon"
       
            
              break
@@ -103,7 +111,9 @@ if(path)
 {
      _path = path
      _path.add(event.point)
+     _path.name="drawing"
      setPath(_path)
+
 }
         break
 
@@ -115,6 +125,8 @@ if(path)
 {
      _path = path
      _path.add(event.point)
+    _path.name="curve"
+
      setPath(_path)
 }
         break
@@ -126,20 +138,19 @@ if(path)
   // }
 }
   
-_path.strokeWidth = strokeProperty.strokeWidth
-_path.strokeColor = strokeColor
-_path.data.state = null;
+_path.strokeWidth = itemProperty.strokeStyle.width
+_path.strokeColor = itemProperty.strokeStyle.color
 
 if(type!==FREE_DRAW && type!==PEN_TOOL )
 {
-
-  _path.fillColor = fillColor
   
+  _path.fillColor = itemProperty.fillStyle.color
   _path.removeOn({
     drag: true,
     down: false,
     up:false
   })
+  _path.data.state = "selection"
   setPath(_path)
 }
 }

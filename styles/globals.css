@@ -21,7 +21,7 @@ a {
 
 .toolBar {
   position: relative;
-  background-color: #061b29;
+  background-color: #0d1418;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -33,7 +33,7 @@ a {
 
 .toolBar .dropbtn:hover {
   height: 100%;
-  background-color: #0d3855;
+  background-color: #1f3039;
 }
 
 .toolBar .dropbtn .toolBarIcon {
@@ -50,7 +50,7 @@ a {
 
 .toolBar .dropbtn .toolBarIcon svg > * {
   fill: white !important;
-  stroke: #061b29 !important;
+  stroke: #0d1418 !important;
 }
 
 .toolBar .dropdown {
@@ -101,7 +101,7 @@ a {
 
 .toolBar .dropdown .dropdownContent .toolBarIcon:hover {
   width: 100%;
-  background-color: rgba(6, 27, 41, 0.1);
+  background-color: rgba(13, 20, 24, 0.1);
 }
 
 .toolBar .dropdown .dropdownContent .toolBarIcon span {
@@ -159,6 +159,101 @@ a {
   position: absolute;
   left: 30%;
   top: 100%;
+}
+
+.group, .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.main {
+  height: 100vh;
+}
+
+.main .left {
+  width: 24%;
+}
+
+.main .canvas {
+  width: 62%;
+  background: rgba(0, 0, 0, 0.034);
+}
+
+.main .right {
+  width: 34%;
+  min-height: 80vh;
+  overflow: hidden;
+  background: white;
+  -webkit-box-shadow: -1px 0 1rem rgba(0, 0, 0, 0.137);
+          box-shadow: -1px 0 1rem rgba(0, 0, 0, 0.137);
+  padding: 1rem 0;
+}
+
+.main .right .propertyPanel {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.main .right .propertyPanel > *:not(:last-child), .main .right .propertyPanel > *:not(:first-child) {
+  padding: 1rem;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.main .right .propertyPanel h1 {
+  font-size: 1.2rem;
+}
+
+.main .right .propertyPanel .row {
+  gap: 1rem;
+}
+
+.main .right .propertyPanel label {
+  font-size: .9rem;
+}
+
+.main .right .propertyPanel h4 {
+  color: rgba(0, 0, 0, 0.787);
+  margin-bottom: .5rem;
+}
+
+.main .right .propertyPanel input {
+  outline: none;
+  width: 3.5rem;
+  padding: .3rem;
+  border: none;
+  background: rgba(0, 0, 0, 0.109);
+}
+
+.main .right .propertyPanel .fill_color {
+  width: 2rem;
+  border: none;
+  outline: none;
+}
+
+.main .right .propertyPanel .stroke_color {
+  width: 2rem;
+  border: .3rem solid;
+  outline: none;
+}
+
+.main .right .propertyPanel .percent {
+  width: 3rem;
+}
+
+.main .right .propertyPanel .input_group {
+  width: 6.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: .5rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.main .right .propertyPanel .item_stroke_section .group {
+  margin-bottom: 1rem;
 }
 
 /* svg{

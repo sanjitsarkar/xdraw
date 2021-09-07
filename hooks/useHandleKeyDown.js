@@ -2,20 +2,25 @@ import { project } from "paper/dist/paper-core"
 import { useCallback, useContext } from "react"
 import { HistoryContext } from "../store/HistoryStore"
 import { IndexContext } from "../store/IndexStore"
-import { PathsContext } from "../store/PathsStore"
 import { ShapeTypeContext } from "../store/ShapeTypeStore"
 import { ToolTypeContext } from "../store/ToolTypeStore"
 import { CIRCLE, DRAW, LINE, PEN_TOOL, RECTANGLE, SELECT } from "../utility/Constants"
+// import { useProject } from "./useProject"
 export const useHandleKeyDown = (downloadRef) =>
 {
   const {index, setIndex} = useContext(IndexContext)
-const {paths} = useContext(PathsContext)
 const {setHistory} = useContext(HistoryContext)
 const {setToolType} = useContext(ToolTypeContext)
 const {setShapeType} = useContext(ShapeTypeContext)
+let paths = []
+let activeLayer = {}
+if(project)
+{
+paths = project?.activeLayer.children
+activeLayer = project?.activeLayer.children
+}
 const handleUndo = () => {
-    console.log("Undo")
-    console.log("Length",index)
+   
     if(index>=0)
     {
       paths[index].remove()
@@ -40,14 +45,10 @@ const handleUndo = () => {
       console.log("Redo")
     }
      const handleClearAll = () => {
-      console.log("Clear")
-      paths.forEach((_path)=>{
-        _path.remove()})
       
-    
+      project.activeLayer.remove()
     }
      const handleDelete = () => {
-      console.log("Delete")
       paths.forEach((_path)=>{
         if(_path.selected)
         _path.remove()
@@ -57,32 +58,43 @@ const handleUndo = () => {
     }
 
  const keyDown = useCallback((e)=>{
-    if (e.ctrlKey &&  (e.which === 122 || e.which === 90)) {
+   e = e.event
+    if (e.ctrlKey &&  (e.key === "z" || e.key === "Z")) {
       e.preventDefault()
   
        handleUndo()
-    } else if (e.ctrlKey & (e.which === 115 || e.which === 83)) {
+    } else if (e.ctrlKey & (e.key === "s" || e.key === "S")) {
       e.preventDefault()
       handleSave()
-    } else if (e.ctrlKey && (e.which === 121 || e.which === 89)) {
+    } else if (e.ctrlKey && (e.key === "y" || e.key === "Y")) {
       e.preventDefault()
   
       handleRedo()
     }
-    else if (e.ctrlKey && (e.which === 120 || e.which === 88)) {
+    else if (e.ctrlKey && e.shiftKey && (e.key === "z" || e.key === "Z")) {
+      e.preventDefault()
+  
+      handleRedo()
+    }
+    else if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
       e.preventDefault()
   
       handleClearAll()
     }
-    else if (e.which===46 || e.which===8 ) {
+    // else if (e.which===46 || e.which===8 ) {
+    //   e.preventDefault()
+  
+    //   handleDelete()
+    // }
+    // else if (e.which===46 || e.which===8 ) {
+    //   e.preventDefault()
+  
+    //   handleDelete()
+    // }
+    else if (e.ctrlKey && (e.key==="a" ||e.key==="A" )) {
       e.preventDefault()
   
-      handleDelete()
-    }
-    else if (e.which===46 || e.which===8 ) {
-      e.preventDefault()
-  
-      handleDelete()
+      project.selectAll()
     }
     else if (e.key==="R" || e.key==="r" ) {
       e.preventDefault()
